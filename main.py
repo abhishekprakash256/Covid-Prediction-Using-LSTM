@@ -56,11 +56,12 @@ look_back = 1
 x_train, y_train = create_dataset(train, look_back)
 x_test, y_test = create_dataset(test, look_back)
 # print(x_train, y_train)
+# print(x_train.shape)
 
 x_train = np.reshape(x_train, (x_train.shape[0], 1, x_train.shape[1]))
 x_test = np.reshape(x_test, (x_test.shape[0], 1, x_test.shape[1]))
 
-# print(x_train.shape, x_train)
+print(x_train.shape)
 
 model = Sequential()
 model.add(LSTM(32, input_shape=(1, look_back)))
@@ -71,17 +72,22 @@ model.fit(x_train, y_train, epochs=10, batch_size = 1, validation_data=(x_test, 
 trainPredict = model.predict(x_train)
 testPredict = model.predict(x_test)
 
+temp = np.expand_dims(pos, axis=1)
+print(temp.shape)
+fullPredict = model.predict(temp)
+
 trainPredict = scaler.inverse_transform(trainPredict)
 y_train = scaler.inverse_transform(y_train)
 testPredict = scaler.inverse_transform(testPredict)
 y_test = scaler.inverse_transform(y_test)
+fullPredict = scaler.inverse_transform(fullPredict)
 
 # print(y_train.shape, y_train)
 # print(trainPredict.shape, trainPredict)
 print("Train RMSE:", math.sqrt(mean_squared_error(y_train[:, 0], trainPredict[:, 0])))
 print("Test RMSE:", math.sqrt(mean_squared_error(y_test[:, 0], testPredict[:, 0])))
 
-
+print(pos.shape)
 # shift train predictions for plotting
 trainPredictPlot = np.empty_like(pos)
 trainPredictPlot[:, :] = np.nan
@@ -94,4 +100,5 @@ testPredictPlot[len(trainPredict)+(look_back*2)+1:len(pos)-1, :] = testPredict
 plt.plot(scaler.inverse_transform(pos))
 plt.plot(trainPredictPlot)
 plt.plot(testPredictPlot)
+plt.plot(fullPredict)
 plt.show()
