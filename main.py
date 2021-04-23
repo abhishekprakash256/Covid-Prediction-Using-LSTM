@@ -73,33 +73,79 @@ model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(x_train, y_train, epochs=10, batch_size = 1, validation_data=(x_test, y_test))
 '''
 
+
 #------------------model 2 --------------------------------------------------------------------------------------#
 
-
+'''
 model = Sequential()
 model.add(LSTM(32, input_shape=(1, look_back)))
-#model.add(Dropout(0.10))
-model.add(Dense(1))
+model.add(Dropout(0.50))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(x_train, y_train, epochs=10, batch_size = 1, validation_data=(x_test, y_test))
 
-
+#diff = 9538
+'''
 
 #-------------------------------------------------------------------------------------------------------------#
 
-'''
+
 
 model = Sequential()
 model.add(LSTM(32, input_shape=(1, look_back)))
+model.add(Dropout(0.50))
 model.add(Dense(1))
+#model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(x_train, y_train, epochs=10, batch_size = 1, validation_data=(x_test, y_test))
 
-'''
+#diff = 3725
+
 #--------------------------------------------------------------------------------------------------------------#
 
+'''
+batch_size = 1
+model = Sequential()
+model.add(LSTM(4, batch_input_shape=(batch_size, look_back, 1), stateful=True))
+model.add(Dense(1))
+model.compile(loss='mean_squared_error', optimizer='adam')
+for i in range(20):
+	model.fit(x_train, y_train, epochs=1, batch_size=batch_size, validation_data=(x_test, y_test))
+	model.reset_states()
 
+
+'''
+
+#---------------------------------------------------------------------------------------------#
+
+
+
+
+'''
+trainPredict = model.predict(x_train, batch_size=batch_size)
+model.reset_states()
+testPredict = model.predict(x_test, batch_size=batch_size)
+# invert predictions
+trainPredict = scaler.inverse_transform(trainPredict)
+trainY = scaler.inverse_transform([y_train])
+testPredict = scaler.inverse_transform(testPredict)
+testY = scaler.inverse_transform([y_test])
+# calculate root mean squared error
+trainScore = math.sqrt(mean_squared_error(y_train[0], trainPredict[:,0]))
+print('Train Score: %.2f RMSE' % (trainScore))
+testScore = math.sqrt(mean_squared_error(y_test[0], testPredict[:,0]))
+print('Test Score: %.2f RMSE' % (testScore))
+
+'''
+
+
+
+
+
+
+
+
+#----------------------------------------------------------------------------------------_#
 
 
 
@@ -110,16 +156,23 @@ temp = np.expand_dims(pos, axis=1)
 print(temp.shape)
 fullPredict = model.predict(temp)
 
+
+
 trainPredict = scaler.inverse_transform(trainPredict)
 y_train = scaler.inverse_transform(y_train)
 testPredict = scaler.inverse_transform(testPredict)
 y_test = scaler.inverse_transform(y_test)
 fullPredict = scaler.inverse_transform(fullPredict)
 
+
+
 # print(y_train.shape, y_train)
 # print(trainPredict.shape, trainPredict)
+
 print("Train RMSE:", math.sqrt(mean_squared_error(y_train[:, 0], trainPredict[:, 0])))
 print("Test RMSE:", math.sqrt(mean_squared_error(y_test[:, 0], testPredict[:, 0])))
+
+print("check")
 
 print(pos.shape)
 # shift train predictions for plotting
