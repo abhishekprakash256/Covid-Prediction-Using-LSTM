@@ -7,7 +7,7 @@ import math
 import tensorflow as tf
 from tensorflow import keras as K
 from keras.models import Sequential
-from keras.layers import Dense, LSTM
+from keras.layers import Dense, LSTM , Dropout
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 #----------------------------------------------import of the data set in the file-----------------------------------------
@@ -63,11 +63,45 @@ x_test = np.reshape(x_test, (x_test.shape[0], 1, x_test.shape[1]))
 
 print(x_train.shape)
 
+#-------the model default----------------------------------------------------------------------------------------#
+
+'''
 model = Sequential()
 model.add(LSTM(32, input_shape=(1, look_back)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(x_train, y_train, epochs=10, batch_size = 1, validation_data=(x_test, y_test))
+'''
+
+#------------------model 2 --------------------------------------------------------------------------------------#
+
+
+model = Sequential()
+model.add(LSTM(32, input_shape=(1, look_back)))
+#model.add(Dropout(0.10))
+model.add(Dense(1))
+model.add(Dense(1))
+model.compile(loss='mean_squared_error', optimizer='adam')
+model.fit(x_train, y_train, epochs=10, batch_size = 1, validation_data=(x_test, y_test))
+
+
+
+#-------------------------------------------------------------------------------------------------------------#
+
+'''
+
+model = Sequential()
+model.add(LSTM(32, input_shape=(1, look_back)))
+model.add(Dense(1))
+model.compile(loss='mean_squared_error', optimizer='adam')
+model.fit(x_train, y_train, epochs=10, batch_size = 1, validation_data=(x_test, y_test))
+
+'''
+#--------------------------------------------------------------------------------------------------------------#
+
+
+
+
 
 trainPredict = model.predict(x_train)
 testPredict = model.predict(x_test)
