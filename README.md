@@ -5,12 +5,15 @@ Covid cases are increasing day by day and in these unprecedented days it's very 
 ### Dependencies - 
 
 - Python, Pandas , Keras , Matplotlib and TensorFlow 
+- Details - check requirement.txt
 
 ### Results - 
 
-![](/Covid_Prediction_using_LSTM/results/model_predict.png)
+![](results/model_predict.png)
 
 ### Validation - 
 
 - For the validation of the results we use RMSE for test and train also we generated the graph for prediction and test comparison 
+
+![](results/Screenshot from 2021-04-23 03-21-39.png)
 
