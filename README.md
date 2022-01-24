@@ -15,5 +15,5 @@ Covid cases are increasing day by day and in these unprecedented days it's very 
 
 - For the validation of the results we use RMSE for test and train also we generated the graph for prediction and test comparison 
 
-![](results/Screenshot from 2021-04-23 03-21-39.png)
+![](results/Screenshot.png)
 
