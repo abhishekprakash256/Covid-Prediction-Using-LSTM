@@ -7,6 +7,16 @@ Covid cases are increasing day by day and in these unprecedented days it's very 
 - Python, Pandas , Keras , Matplotlib and TensorFlow 
 - Details - check requirement.txt
 
+### Installation
+
+```bash
+git clone https://github.com/abhishekprakash256/Covid_Prediction_using_LSTM
+
+cd Covid_Prediction_using_LSTM/
+
+python3 main.py
+```
+
 ### Results - 
 
 ![](results/model_predict.png)
